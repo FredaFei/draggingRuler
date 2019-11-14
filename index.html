@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Parcel Sandbox</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <link rel="stylesheet" href="./src/styles.css" />
+  <body>
+    <div id="app">
+      <h1>存储收益：<strong class="profits"></strong></h1>
+      <div class="gold-computed-body">
+        <div class="gold-computed-spec">
+          <div class="label">
+            <span class="left">买入克重：<input id="gram" type="text" value="100" />克</span>
+            <button class="btn primary-color all-in">余额全部买入</button>
+          </div>
+          <div class="drag-inner">
+            <div class="drag-bg"></div>
+            <div class="cursor"></div>
+          </div>
+        </div>
+        <div class="gold-computed-date">
+          <div class="label">存储期限：<span class="date primary-color" data-rate="0" data-limit="0">30</span>天</div>
+          <div class="drag-inner">
+            <div class="views">
+              <div class="lines"></div>
+              <div class="drag-bg"></div>
+            </div>
+            <div class="cursor"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="src/index.js"></script>
+  </body>
+</html>

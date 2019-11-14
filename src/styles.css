@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 10px;
+}
+#app {
+  padding: 1rem 1.4rem;
+}
+.gold-computed-body {
+  margin-top: 2rem;
+  font-size: 1.4rem;
+}
+.label {
+  margin-bottom: 2rem;
+}
+
+.drag-inner {
+  padding: 2rem 0;
+  position: relative;
+}
+.drag-inner .drag-bg {
+  width: 100%;
+  height: 2rem;
+}
+.drag-inner .cursor {
+  position: absolute;
+  top: -10%;
+  left: -1rem;
+  width: 2rem;
+  height: 2.8rem;
+  background: url(./images/bean.png) no-repeat;
+  background-size: 100%;
+  transition: all 0.2s ease;
+}
+
+.gold-computed-spec {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4rem;
+}
+.gold-computed-spec .label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gold-computed-spec input {
+  width: 6rem;
+  margin: 0 .4rem;
+  padding: .5rem;
+  color: #d5a55d;
+  border: 1px solid #cccccc;
+  border-radius: 1.2rem;
+}
+.gold-computed-spec .btn {
+  width: 9rem;
+  line-height: 2.6rem;
+  text-align: center;
+  background: #fef8ee;
+  border: 1px solid #d5a55d;
+  border-radius: 3rem;
+}
+.gold-computed-spec .btn.disabled {
+  background: #eee;
+  color: #aaa;
+  border: 1px solid #aaa;
+}
+.gold-computed-spec .drag-bg {
+  background: url(./images/spec-gold-bg.png) no-repeat;
+  background-size: 100%;
+  position: relative;
+}
+.gold-computed-spec .drag-bg .data-item {
+  position: absolute;
+  top: 100%;
+}
+
+.gold-computed-date {
+  margin-top: 4rem;
+}
+.gold-computed-date .label {
+  margin-bottom: 4rem;
+}
+.gold-computed-date .date {
+}
+.gold-computed-date .cursor {
+  top: -40%;
+}
+.gold-computed-date .view {
+  position: relative;
+}
+.gold-computed-date .lines {
+  border-bottom: 1px solid #fae9cf;
+}
+.gold-computed-date .lines .line {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 2rem;
+  background: #fae9cf;
+  border-radius: 1px;
+}
+.gold-computed-date .drag-bg {
+  background: url(./images/line-bg.png) no-repeat;
+  background-size: 100%;
+  height: 1rem;
+  position: relative;
+}
+.gold-computed-date .drag-bg .data-item {
+  position: absolute;
+  top: 100%;
+}
+.gold-computed-date .drag-bg .data-item.recommend:after {
+  content: '推荐';
+  position: absolute;
+  top: 14%;
+  left: 120%;
+  width: 4rem;
+  line-height: 2.2rem;
+  color: #916f42;
+  text-align: center;
+  background: #fbd98a;
+  border-radius: 0px 1.2rem 1.2rem 1.2rem;
+}
