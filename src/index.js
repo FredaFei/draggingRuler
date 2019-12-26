@@ -42,6 +42,21 @@ function toFixed2(n) {
   console.error('参数n的类型 只能是number或string')
   return -1
 }
+function throttle(fn) {
+  var running = false
+  return function() {
+    context = this
+    args = arguments
+    if (!running) {
+      requestAnimationFrame(function() {
+        running = false
+        fn.apply(context, args)
+      })
+    }
+    running = true
+  }
+}
+
 function computedBalance() {
   // 存储收益
   // 计算公式：商品原价(平台金价)*黄金克数*数量*对应存储期限基础年回报率*存储期限/360；其中的黄金克数指的是商品克数
@@ -58,7 +73,8 @@ var dragInnerWidth = node.width()
 
 var startX = 0
 var currentIndex = 0
-var half = ($('.cursor').width() / 2 / dragInnerWidth) * 100
+var half = $('.cursor').width() / 2
+var halfRate = (half / dragInnerWidth) * 100
 var dragDeadLine = {
   init() {
     $('.gold-computed-date .lines').html(this.renderGoldSplitLines(dataSource))
@@ -110,7 +126,7 @@ var dragDeadLine = {
     }
     var one = (1 / max) * 100
     $('.gold-computed-date .cursor').css({
-      left: currentIndex * one - half + '%'
+      left: currentIndex * one - halfRate + '%'
     })
     var $currentNode = $dataItem.eq(currentIndex)
     $('.date')
@@ -144,7 +160,7 @@ var dragDeadLine = {
 dragDeadLine.init()
 
 var grams = [1, 20, 50, 100, 500, 1000]
-var gramsMap = [{ scale: 20, base: 0 }, { scale: 30, base: 20 }, { scale: 50, base: 50 }, { scale: 500, base: 100 }, { scale: 500, base: 500 }, { scale: 500, base: 1000 }]
+var gramsMap = [{ scale: 20, base: 1 }, { scale: 30, base: 20 }, { scale: 50, base: 50 }, { scale: 400, base: 100 }, { scale: 500, base: 500 }, { scale: 500, base: 1000 }]
 
 var startX2 = 0
 var average = dragInnerWidth / (grams.length - 1)
@@ -163,8 +179,19 @@ var dragGerms = {
       }
       startX2 = e.originalEvent.targetTouches[0].clientX
     })
+    $('.gold-computed-spec .cursor').on('touchmove', e => {
+      var endX = e.originalEvent.changedTouches[0].clientX
+      throttle(this.setStyle)(endX)
+      startX2 = endX
+    })
     $('.gold-computed-spec .cursor').on('touchend', e => {
       var endX = e.originalEvent.changedTouches[0].clientX
+      this.setStyle(endX)
+      this.setGram(endX)
+      startX2 = endX
+    })
+    $('body').on('click', e => {
+      var endX = e.pageX - offsetX - half
       this.setStyle(endX)
       this.setGram(endX)
       startX2 = endX
@@ -199,15 +226,15 @@ var dragGerms = {
     })
   },
   setGram(endX) {
-    var index = Math.floor((endX) / average)
-    var mode = (endX) % average
+    var index = Math.floor((endX + offsetX) / average)
+    var mode = (endX + offsetX) % average
     if (index <= 0) {
       index = 0
     } else if (index >= gramsMap.length - 1) {
       index = gramsMap.length - 1
     }
     var item = gramsMap[index]
-    var gram = Math.floor((mode / average) * item.scale) + item.base
+    var gram = Math.floor((mode / average) * item.scale + item.base) 
     gram = gram < 0 ? 0 : gram
     this.toggleGrams(gram)
     $('#gram').val(gram)
@@ -218,7 +245,7 @@ var dragGerms = {
     var delta = startX2 + endX - startX2 - half
     if (delta <= -offsetX) {
       delta = -offsetX - half
-    } else if (delta >= dragInnerWidth) {
+    } else if (delta >= dragInnerWidth - offsetX) {
       delta = dragInnerWidth - offsetX - half
     }
     $('.gold-computed-spec .cursor').css({ left: delta + 'px' })
@@ -238,8 +265,10 @@ var dragGerms = {
     return data
       .map(function(item, index) {
         var classes = item.recommend == 1 ? 'recommend' : ''
-        var delta = index === 0 ? 1 : index === data.length - 1 ? 8 : 4
+        var delta = index === 0 ? 1 : index === data.length - 1 ? 8 : 2
+        delta = item === '>1000' ? 10 : delta
         var style = 'left: ' + (rate * index - delta + '%')
+
         return '<span class="data-item ' + classes + '" style="' + style + '">' + item + '</span>'
       })
       .join('')
